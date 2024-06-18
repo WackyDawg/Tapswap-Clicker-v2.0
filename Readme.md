@@ -1,5 +1,6 @@
 [![GitHub](https://img.shields.io/badge/GitHub-%23181717.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/WackyDawg)
 [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/JNwadinobi26328)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/julian-nwadinobi-xsd)
 # TapSwap 🗲Auto Clicker V2.0
 
 Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the clicking process in the TapSwap game, allowing you to maximize your earnings by running continuously 24/7. Unlike the manual tapping required in the game, this script ensures every second is utilized efficiently.
@@ -26,8 +27,8 @@ Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the c
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/WackyDawg/Tapswap--Bot.git
-   cd Tapswap--Bot
+   git clone https://github.com/WackyDawg/Tapswap-Clicker-v2.0.git
+   cd Tapswap-Clicker-v2.0
    ```
 2. Install the required packages:
 
