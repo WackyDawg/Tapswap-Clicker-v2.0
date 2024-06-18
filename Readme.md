@@ -5,6 +5,11 @@
 
 Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the clicking process in the TapSwap game, allowing you to maximize your earnings by running continuously 24/7. Unlike the manual tapping required in the game, this script ensures every second is utilized efficiently.
 
+### Functionality Notice
+
+**Boost Functionality Maintenance:**
+The functionality for sending boosts (energy and turbo) is currently under maintenance. We are actively working to resolve this issue. Please note that during this period, boost activation may not work as intended.
+
 ## Features
 
 - Automates the tap-to-earn process in the TapSwap game.
