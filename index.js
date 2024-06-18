@@ -45,6 +45,14 @@ const allowwtp = authConfig.allows_write_to_pm;
 const authd = authConfig.auth_date;
 const uhash = authConfig.hash;
 
+// Calculate total coins per day
+const coinsPerCycle = tapsConfig.coinsPerCycle;
+const cycleDuration = tapsConfig.cycleDuration;
+const boostInterval = tapsConfig.boostInterval;
+const cyclesPerDay = Math.floor(86400 / cycleDuration);
+const totalCoinsPerDay = coinsPerCycle * cyclesPerDay;
+console.log(`Total Coins To Earn Per Day: 🟡 ${totalCoinsPerDay}`);
+
 (async () => {
   const browser = await puppeteer.launch({ args:[ "--disable-setuid-sandbox", "--no-sandbox", "--single-process", "--no-zygote",],  executablePath: process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(), headless: true });
   const page = await browser.newPage();
@@ -82,7 +90,7 @@ const uhash = authConfig.hash;
         }
       });
 
-      const url = `https://app.tapswap.club/?bot=app_bot_0#tgWebAppData=query_id%3D${queryid}%26user%3D%257B%2522id%2522%253A${uid}%252C%2522first_name%2522%253A%2522${firstname}%2522%252C%2522last_name%2522%253A%2522${lastname}%2522%252C%2522language_code%2522%253A%2522${languagecode}%2522%252C%2522allows_write_to_pm%2522%253A${allowwtp}%257D%26auth_date%3D${authd}%26hash%3D${uhash}&tgWebAppVersion=7.2&tgWebAppPlatform=android&tgWebAppThemeParams=%7B%22bg_color%22%3A%22%23ffffff%22%2C%22section_bg_color%22%3A%22%23ffffff%22%2C%22secondary_bg_color%22%3A%22%23f0f0f0%22%2C%22text_color%22%3A%22%23222222%22%2C%22hint_color%22%3A%22%23a8a8a8%22%2C%22link_color%22%3A%22%232678b6%22%2C%22button_color%22%3A%22%2350a8eb%22%2C%22button_text_color%22%3A%22%23ffffff%22%2C%22header_bg_color%22%3A%22%23527da3%22%2C%22accent_text_color%22%3A%22%231c93e3%22%2C%22section_header_text_color%22%3A%22%233a95d5%22%2C%22subtitle_text_color%22%3A%22%2382868a%22%2C%22destructive_text_color%22%3A%22%23cc2929%22%7D`;
+      const url = `https://app.tapswap.club/?bot=app_bot_0#tgWebAppData=query_id%3D${queryid}%26user%3D%257B%2522id%2522%253A${uid}%252C%2522first_name%2522%253A%2522${firstname}%2522%252C%2522last_name%2522%253A%2522${lastname}%2522%252C%2522username%2522%253A%2522d4rk5id3_hacker%2522%252C%2522language_code%2522%253A%2522${languagecode}%2522%252C%2522allows_write_to_pm%2522%253A${allowwtp}%257D%26auth_date%3D${authd}%26hash%3D${uhash}&tgWebAppVersion=7.4&tgWebAppPlatform=android&tgWebAppThemeParams=%7B%22bg_color%22%3A%22%23212d3b%22%2C%22section_bg_color%22%3A%22%231d2733%22%2C%22secondary_bg_color%22%3A%22%23151e27%22%2C%22text_color%22%3A%22%23ffffff%22%2C%22hint_color%22%3A%22%237d8b99%22%2C%22link_color%22%3A%22%235eabe1%22%2C%22button_color%22%3A%22%2350a8eb%22%2C%22button_text_color%22%3A%22%23ffffff%22%2C%22header_bg_color%22%3A%22%23242d39%22%2C%22accent_text_color%22%3A%22%2364b5ef%22%2C%22section_header_text_color%22%3A%22%2379c4fc%22%2C%22subtitle_text_color%22%3A%22%237b8790%22%2C%22destructive_text_color%22%3A%22%23ee686f%22%7D`;
       //console.log(url);
 
       page.goto(url).catch((error) => reject(error));
