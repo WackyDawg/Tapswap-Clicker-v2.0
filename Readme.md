@@ -19,7 +19,7 @@ Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the c
 - Node.js
 - npm (Node Package Manager)
 - Telegram(Android
-- [![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)] Render Account : To deploy and run this code 24/7 without consuming your power and internet connection, you will need a [Render](https://render.com/) account.
+- ![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white) Render Account : To deploy and run this code 24/7 without consuming your power and internet connection, you will need a [Render](https://render.com/) account.
 - Cron-job.org Account : To run cron job on your server so that it does not go inactive.
 
 ## Installation
