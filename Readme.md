@@ -49,7 +49,7 @@ Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the c
    ```
 
    ![1718667709840](images/Readme/1718667709840.png)
-7. You should get this response: "Details saved to credentials.json." Now go to the `auth/credentials.json` file that was just generated and use the details to set up `credentials.js`.
+7. You should get this response: "Details saved to credentials.json." Now go to the `auth/credentials.json` file that was just generated and use the details to set up `credentials.js` e.g.
 
    ```
    {
