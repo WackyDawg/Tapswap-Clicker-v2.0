@@ -1,9 +1,8 @@
 import url from "url";
 import querystring from "querystring";
-import fs from "fs"
+import fs from "fs";
 
-
-const Url = "Input Url Here!!";
+const Url = "URL HERE!!";
 
 const parsedUrl = url.parse(Url);
 const queryParams = querystring.parse(parsedUrl.hash.slice(1));
@@ -11,18 +10,27 @@ const queryParams = querystring.parse(parsedUrl.hash.slice(1));
 const tgWebAppData = queryParams.tgWebAppData;
 const decodedData = querystring.parse(tgWebAppData);
 
-const details = {
-  query_id: decodedData.query_id,
-  user_id: JSON.parse(decodedData.user).id,
-  first_name: JSON.parse(decodedData.user).first_name,
-  last_name: JSON.parse(decodedData.user).last_name,
-  username: JSON.parse(decodedData.user).username,
-  language_code: JSON.parse(decodedData.user).language_code,
-  allows_write_to_pm: JSON.parse(decodedData.user).allows_write_to_pm,
-  auth_date: decodedData.auth_date,
-  hash: decodedData.hash,
-};
+try {
+  const user = JSON.parse(decodedData.user);
 
-fs.writeFileSync("./auth/credentials.json", JSON.stringify(details, null, 2));
+  const details = {
+    query_id: decodedData.query_id,
+    user_id: user.id,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    username: user.username,
+    language_code: user.language_code,
+    allows_write_to_pm: user.allows_write_to_pm,
+    auth_date: decodedData.auth_date,
+    hash: decodedData.hash,
+    tgWebAppVersion: queryParams.tgWebAppVersion,
+    tgWebAppPlatform: queryParams.tgWebAppPlatform,
+    tgWebAppThemeParams: JSON.parse(queryParams.tgWebAppThemeParams),
+  };
 
-console.log("Details saved to credentials.json");
+  fs.writeFileSync("./auth/credentials.json", JSON.stringify(details, null, 2));
+
+  console.log("Details saved to credentials.json");
+} catch (error) {
+  console.error("Error parsing JSON data:", error.message);
+}

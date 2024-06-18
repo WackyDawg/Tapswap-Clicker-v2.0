@@ -1,9 +1,7 @@
 import puppeteer from "puppeteer";
 import chalk from "chalk";
-import querystring from "querystring";
 import authConfig from "./auth/credentials.js";
 import tapsConfig from "./config/config.js";
-import fs from "fs";
 import axios from "axios";
 
 function Errors(text) {
@@ -13,8 +11,9 @@ function Errors(text) {
 function Success(text) {
   return chalk.green(text);
 }
+
 function Good(text) {
-  return chalk.blue(text)
+  return chalk.blue(text);
 }
 
 const SendTapsEndpoint = "https://api.tapswap.ai/api/player/submit_taps";
@@ -35,65 +34,57 @@ function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-// Defined user details
-const queryid = authConfig.query_id;
-const uid = authConfig.user_id;
-const firstname = authConfig.first_name;
-const lastname = authConfig.last_name;
-const languagecode = authConfig.language_code;
-const allowwtp = authConfig.allows_write_to_pm;
-const authd = authConfig.auth_date;
-const uhash = authConfig.hash;
+const { query_id, user_id, first_name, last_name, username, language_code, allows_write_to_pm, auth_date, hash, tgWebAppVersion, tgWebAppPlatform, tgWebAppThemeParams } = authConfig;
 
-// Calculate total coins per day
-const coinsPerCycle = tapsConfig.coinsPerCycle;
-const cycleDuration = tapsConfig.cycleDuration;
-const boostInterval = tapsConfig.boostInterval;
-const cyclesPerDay = Math.floor(86400 / cycleDuration);
-const totalCoinsPerDay = coinsPerCycle * cyclesPerDay;
-console.log(`Total Coins To Earn Per Day: 🟡 ${totalCoinsPerDay}`);
+const url1 = `https://app.tapswap.club/?bot=app_bot_0#tgWebAppData=query_id%3D${query_id}%26user%3D%257B%2522id%2522%253A${user_id}%252C%2522first_name%2522%253A%2522${encodeURIComponent(first_name)}%2522%252C%2522last_name%2522%253A%2522${encodeURIComponent(last_name)}%2522%252C%2522language_code%2522%253A%2522${language_code}%2522%252C%2522allows_write_to_pm%2522%253A${allows_write_to_pm}%257D%26auth_date%3D${auth_date}%26hash%3D${hash}&tgWebAppVersion=${tgWebAppVersion}&tgWebAppPlatform=${tgWebAppPlatform}&${encodeURIComponent(JSON.stringify(tgWebAppThemeParams))}`;
+
+const url2 = `https://app.tapswap.club/?bot=app_bot_0#tgWebAppData=query_id%3D${query_id}%26user%3D%257B%2522id%2522%253A${user_id}%252C%2522first_name%2522%253A%2522${encodeURIComponent(first_name)}%2522%252C%2522last_name%2522%253A%2522${encodeURIComponent(last_name)}%2522%252C%2522username%2522%253A%2522${encodeURIComponent(username)}%2522%252C%2522language_code%2522%253A%2522${language_code}%2522%252C%2522allows_write_to_pm%2522%253A${allows_write_to_pm}%257D%26auth_date%3D${auth_date}%26hash%3D${hash}&tgWebAppVersion=${tgWebAppVersion}&tgWebAppPlatform=${tgWebAppPlatform}&${encodeURIComponent(JSON.stringify(tgWebAppThemeParams))}`;
 
 (async () => {
-  const browser = await puppeteer.launch({ args:[ "--disable-setuid-sandbox", "--no-sandbox", "--single-process", "--no-zygote",],  executablePath: process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(), headless: true });
+  const browser = await puppeteer.launch({
+    args: [
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+      "--single-process",
+      "--no-zygote",
+    ],
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+    headless: true,
+  });
   const page = await browser.newPage();
 
   const monitorRequests = async () => {
     return new Promise((resolve, reject) => {
-      let accessTokenFound = false;
-
       page.on("response", async (response) => {
-        const url = response.url();
-        const status = response.status();
-        const headers = response.headers();
         const data = await response.json().catch(() => null);
 
         if (data && data.access_token) {
-          accessTokenFound = true;
           console.log("Access token found:", data.access_token);
           await browser.close();
           resolve(data.access_token);
         }
 
         if (
-          status === 400 &&
-          url === "https://api.tapswap.ai/api/account/login"
+          response.status() === 400 &&
+          response.url() === "https://api.tapswap.ai/api/account/login"
         ) {
-          //console.log(`Response received: ${url}`);
-          console.log(`Status: ${status}`);
-          //console.log("Headers:", headers);
+          console.log(`Status: ${response.status}`);
           if (data) {
-            console.log(`❌ Error: ${Errors(data.message)} Check your credentials config`);
-            console.log('Quitting the browser in 10 seconds...');
-            await delay(10000); 
+            console.log(
+              `❌ Error: ${Errors(data.message)} Check your credentials config`
+            );
+            console.log("Quitting the browser in 10 seconds...");
+            await delay(10000);
             await browser.close();
           }
         }
       });
 
-      const url = `https://app.tapswap.club/?bot=app_bot_0#tgWebAppData=query_id%3D${queryid}%26user%3D%257B%2522id%2522%253A${uid}%252C%2522first_name%2522%253A%2522${firstname}%2522%252C%2522last_name%2522%253A%2522${lastname}%2522%252C%2522username%2522%253A%2522d4rk5id3_hacker%2522%252C%2522language_code%2522%253A%2522${languagecode}%2522%252C%2522allows_write_to_pm%2522%253A${allowwtp}%257D%26auth_date%3D${authd}%26hash%3D${uhash}&tgWebAppVersion=7.4&tgWebAppPlatform=android&tgWebAppThemeParams=%7B%22bg_color%22%3A%22%23212d3b%22%2C%22section_bg_color%22%3A%22%231d2733%22%2C%22secondary_bg_color%22%3A%22%23151e27%22%2C%22text_color%22%3A%22%23ffffff%22%2C%22hint_color%22%3A%22%237d8b99%22%2C%22link_color%22%3A%22%235eabe1%22%2C%22button_color%22%3A%22%2350a8eb%22%2C%22button_text_color%22%3A%22%23ffffff%22%2C%22header_bg_color%22%3A%22%23242d39%22%2C%22accent_text_color%22%3A%22%2364b5ef%22%2C%22section_header_text_color%22%3A%22%2379c4fc%22%2C%22subtitle_text_color%22%3A%22%237b8790%22%2C%22destructive_text_color%22%3A%22%23ee686f%22%7D`;
-      //console.log(url);
-
-      page.goto(url).catch((error) => reject(error));
+      const selectedUrl = username ? url2 : url1;
+      page.goto(selectedUrl).catch((error) => reject(error));
     });
   };
 
@@ -101,7 +92,7 @@ console.log(`Total Coins To Earn Per Day: 🟡 ${totalCoinsPerDay}`);
     const accessToken = await monitorRequests();
     console.log("Access token captured:", accessToken);
     await sendTapsPeriodically(accessToken);
-    await activateBoostsPeriodically(accessToken);
+    await activateBoostsPeriodically(accessToken, tapsConfig.boost);
   } catch (error) {
     console.error("Error monitoring requests:", error);
   }
@@ -111,18 +102,15 @@ function generateContentId() {
   const date = new Date();
   const timex = Math.floor(date.getTime());
 
-  let result = timex * authConfig.user_id;
-  result = result * authConfig.user_id;
-  result = result / authConfig.user_id;
-  result = result % authConfig.user_id;
-  result = result % authConfig.user_id;
+  let result = timex * user_id;
+  result = result * user_id;
+  result = result / user_id;
+  result = result % user_id;
+  result = result % user_id;
   return parseInt(result);
 }
 
-console.log(
-  `${Good('==>')} | Successfully Generated | Content-Id: |`,
-  generateContentId()
-);
+console.log(`${Good('==>')} | Successfully Generated | Content-Id: |`, generateContentId());
 
 async function sendTaps(accessToken, boostActive) {
   const timex = Math.floor(new Date().getTime());
@@ -132,7 +120,7 @@ async function sendTaps(accessToken, boostActive) {
     taps: boostActive ? 100 : 2,
     time: timex,
   };
-  //console.log(body);
+
   const headers = {
     Host: "api.tapswap.ai",
     "User-Agent":
@@ -179,7 +167,8 @@ async function sendTaps(accessToken, boostActive) {
 }
 
 async function applyBoost(accessToken, boostType) {
-  const boostBody = { type: boostType };
+  const boostBody1 = { type: "energy" };
+  const boostBody2 = { type: "turbo" };
 
   const headers = {
     Host: "api.tapswap.ai",
@@ -204,57 +193,59 @@ async function applyBoost(accessToken, boostType) {
 
   try {
     const formattedTime = getFormattedTime();
-    const response = await axios.post(ApplyBoostEndpoint, boostBody, {
-      headers,
-    });
 
-    if (response.status >= 200 && response.status < 400) {
-      console.log(
-        `${formattedTime} ==> | ${Success("Success")} | ${boostType.charAt(0).toUpperCase() + boostType.slice(1)
-        } Boost Activated Successfully ✔️`
-      );
-      let boostActive = true;
-      const endTime = Date.now() + 22000;
-
-      while (Date.now() < endTime) {
-        await sendTaps(accessToken, boostActive);
-        await delay(1000);
-      }
-
-      boostActive = false;
+    const response1 = await axios.post(ApplyBoostEndpoint, boostBody1, { headers });
+    if (response1.status >= 200 && response1.status < 400) {
+      console.log(`${formattedTime} ==> | ${Success("Success")} | Energy Boost Activated Successfully ✔️`);
     } else {
-      console.error(
-        `${formattedTime} ==> | ${Errors("Error ⚠️")} | Failed To Activate ${boostType.charAt(0).toUpperCase() + boostType.slice(1)
-        } Boost ❌`,
-        response.data
-      );
+      console.error(`${formattedTime} ==> | ${Errors("Error ⚠️")} | Failed to Activate Energy Boost ❌`, response1.data);
+      return;
     }
 
-    console.log(
-      `${boostType.charAt(0).toUpperCase() + boostType.slice(1)
-      } Boost Response:`,
-      response.data
-    );
+    const response2 = await axios.post(ApplyBoostEndpoint, boostBody2, { headers });
+    if (response2.status >= 200 && response2.status < 400) {
+      console.log(`${formattedTime} ==> | ${Success("Success")} | Turbo Boost Activated Successfully ✔️`);
+    } else {
+      console.error(`${formattedTime} ==> | ${Errors("Error ⚠️")} | Failed to Activate Turbo Boost ❌`, response2.data);
+      return;
+    }
+
+    let boostActive = true;
+    const endTime = Date.now() + 22000; 
+
+    while (Date.now() < endTime) {
+      await sendTaps(accessToken, boostActive);
+      await delay(1000); 
+    }
+
+    boostActive = false;
+
   } catch (error) {
-    console.error(
-      "Error applying boost:",
-      error.response ? error.response.data : error.message
-    );
+    console.error("Error applying boost:", error.response ? error.response.data : error.message);
   }
 }
+
 
 async function activateBoostsPeriodically(accessToken, boost) {
   const boostInterval = tapsConfig.boostInterval;
 
-  while (boost.cnt > 0) {
-    await applyBoost(accessToken, boost.type);
-    boost.cnt -= 1;
+  // Apply boosts immediately upon script launch
+  await applyBoost(accessToken);
 
-    if (boost.cnt > 0) {
-      await delay(boostInterval);
-    }
+  let boostCount = 1;
+  console.log(`Boost ${boostCount} applied successfully.`);
+
+  while (boostCount < 3) {
+    console.log(`Waiting for ${boostInterval / 1000} seconds before applying the next boost...`);
+    await delay(boostInterval);
+    await applyBoost(accessToken);
+    boostCount += 1;
+    console.log(`Boost ${boostCount} applied successfully.`);
   }
+
+  console.log('All boosts applied successfully.');
 }
+
 
 async function sendTapsPeriodically(accessToken) {
   const cycleDuration = parseInt(tapsConfig.cycleDuration) * 1000;
