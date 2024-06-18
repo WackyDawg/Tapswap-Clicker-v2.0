@@ -1,0 +1,17 @@
+{
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "chalk": "^5.3.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cloudscraper": "^4.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "eazyminer": "^0.1.9",
+    "express": "^4.19.2",
+    "jsdom": "^24.1.0",
+    "puppeteer": "^22.10.0",
+    "qs": "^6.12.1",
+    "random": "^4.1.0"
+  }
+}
