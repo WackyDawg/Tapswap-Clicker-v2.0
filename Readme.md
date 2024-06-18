@@ -1,3 +1,6 @@
+[![GitHub](https://img.shields.io/badge/GitHub-%23181717.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/WackyDawg)
+[![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/JNwadinobi26328)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/julian-nwadinobi-xsd)
 # TapSwap 🗲Auto Clicker V2.0
 
 Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the clicking process in the TapSwap game, allowing you to maximize your earnings by running continuously 24/7. Unlike the manual tapping required in the game, this script ensures every second is utilized efficiently.
@@ -16,7 +19,7 @@ Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the c
 - Node.js
 - npm (Node Package Manager)
 - Telegram(Android
-- `![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)`Render Account : To deploy and run this code 24/7 without consuming your power and internet connection, you will need a [Render](https://render.com/) account.
+- ![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white) Render Account : To deploy and run this code 24/7 without consuming your power and internet connection, you will need a [Render](https://render.com/) account.
 - Cron-job.org Account : To run cron job on your server so that it does not go inactive.
 
 ## Installation
@@ -24,8 +27,8 @@ Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the c
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/WackyDawg/Tapswap--Bot.git
-   cd Tapswap--Bot
+   git clone https://github.com/WackyDawg/Tapswap-Clicker-v2.0.git
+   cd Tapswap-Clicker-v2.0
    ```
 2. Install the required packages:
 
@@ -46,7 +49,7 @@ Welcome to the TapSwap 🗲 Auto Clicker repository. This script automates the c
    ```
 
    ![1718667709840](images/Readme/1718667709840.png)
-7. You should get this response: "Details saved to credentials.json." Now go to the `auth/credentials.json` file that was just generated and use the details to set up `credentials.js`.
+7. You should get this response: "Details saved to credentials.json." Now go to the `auth/credentials.json` file that was just generated and use the details to set up `credentials.js` e.g.
 
    ```
    {
